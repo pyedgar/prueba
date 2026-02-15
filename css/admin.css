@@ -1,0 +1,22 @@
+.panel-bienvenida-admin {
+    background: linear-gradient(105deg, white 0%, var(--verde-palido) 100%);
+    border: 1px solid var(--verde-claro); border-radius: var(--radio-xl); padding: 28px 32px; margin-bottom: 32px;
+}
+
+.btn-aprobar {
+    background: var(--exito-claro); color: var(--exito); border: 1px solid var(--exito);
+    padding: 8px 12px; border-radius: var(--radio-md); font-weight: 600; font-size: 13px; cursor: pointer;
+}
+.btn-aprobar:hover { background: var(--exito); color: white; }
+
+.btn-rechazar {
+    background: var(--peligro-claro); color: var(--peligro); border: 1px solid var(--peligro);
+    padding: 8px 12px; border-radius: var(--radio-md); font-weight: 600; font-size: 13px; cursor: pointer;
+}
+.btn-rechazar:hover { background: var(--peligro); color: white; }
+
+.btn-ver {
+    background: var(--gris-100); color: var(--gris-700); border: 1px solid var(--gris-400);
+    padding: 6px 12px; border-radius: var(--radio-sm); font-size: 12px; cursor: pointer;
+}
+.btn-ver:hover { background: var(--gris-200); }

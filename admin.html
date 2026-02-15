@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrador · UTC</title>
+    <link rel="stylesheet" href="css/estilo-global.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div id="notificationContainer" class="contenedor-notificaciones"></div>
+
+    <div class="contenedor">
+        <div class="header-global">
+            <h1>🏛️ Panel Administrador</h1>
+            <div class="perfil-admin">
+                <div class="avatar">🏛️</div>
+                <div class="info-usuario">
+                    <div class="nombre-usuario" id="adminNombre">Cargando...</div>
+                    <div class="rol-usuario" id="adminCargo">Administrador</div>
+                </div>
+                <button onclick="cerrarSesion([intervaloActualizacion])" class="btn-cerrar-sesion">🚪 Salir</button>
+            </div>
+        </div>
+
+        <div class="panel-bienvenida-admin">
+            <h2 id="welcomeMessage">📋 Bienvenido</h2>
+            <div class="grid-estadisticas">
+                <div class="tarjeta-estadistica"><span id="totalPendientes">0</span><label>⏳ Pendientes</label></div>
+                <div class="tarjeta-estadistica"><span id="totalAprobados">0</span><label>✅ Aprobados</label></div>
+                <div class="tarjeta-estadistica"><span id="totalRechazados">0</span><label>❌ Rechazados</label></div>
+                <div class="tarjeta-estadistica"><span id="totalReenviados">0</span><label>📤 Reenviados</label></div>
+                <div class="tarjeta-estadistica"><span id="totalEnvios">0</span><label>📤 Total</label></div>
+            </div>
+        </div>
+
+        <div class="tabs-contenedor">
+            <button onclick="filtrarEnvios('pendientes')" id="tabPendientes" class="tab activo">⏳ Pendientes</button>
+            <button onclick="filtrarEnvios('aprobados')" id="tabAprobados" class="tab">✅ Aprobados</button>
+            <button onclick="filtrarEnvios('rechazados')" id="tabRechazados" class="tab">❌ Rechazados</button>
+            <button onclick="filtrarEnvios('reenviados')" id="tabReenviados" class="tab">📤 Reenviados</button>
+            <button onclick="filtrarEnvios('todos')" id="tabTodos" class="tab">📋 Todos</button>
+        </div>
+
+        <div class="contenedor-tabla">
+            <h3 style="padding:20px;">📤 Envíos Recibidos</h3>
+            <table id="tablaEnvios">
+                <thead><tr><th>ID</th><th>Fecha</th><th>Usuario</th><th>Edificio</th><th>Registros</th><th>Horas</th><th>Estado</th><th>Acciones</th></tr></thead>
+                <tbody id="tbodyEnvios"></tbody>
+            </table>
+        </div>
+
+        <div id="modalRechazo" class="modal">
+            <div class="modal-contenido">
+                <h3>❌ Motivo del Rechazo</h3>
+                <textarea id="motivoRechazo" placeholder="Indique el motivo..." style="width:100%; padding:14px; border:1.5px solid var(--gris-300); border-radius:var(--radio-lg); margin:16px 0; min-height:120px;"></textarea>
+                <div style="display:flex; gap:14px; justify-content:flex-end;">
+                    <button onclick="cerrarModal()" class="btn">Cancelar</button>
+                    <button onclick="confirmarRechazo()" class="btn-peligro">Rechazar</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="modalReenviar" class="modal">
+            <div class="modal-contenido">
+                <h3>📤 Reenviar a Super Admin</h3>
+                <p>¿Reenviar esta tabla aprobada?</p>
+                <textarea id="notaReenvio" placeholder="Nota para Super Admin (opcional)" style="width:100%; padding:12px; border:1.5px solid var(--gris-300); border-radius:var(--radio-lg); margin:16px 0;"></textarea>
+                <div style="display:flex; gap:14px; justify-content:flex-end;">
+                    <button onclick="cerrarModalReenviar()" class="btn">Cancelar</button>
+                    <button onclick="confirmarReenvio()" class="btn-primario">✅ Confirmar</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="modalDetalles" class="modal">
+            <div class="modal-contenido">
+                <h3 id="modalTitulo">📋 Detalles</h3>
+                <div id="modalContenido" style="max-height:400px; overflow-y:auto; margin:20px 0; padding:10px; background:var(--gris-50); border-radius:var(--radio-lg);"></div>
+                <button onclick="cerrarModalDetalles()" class="btn">Cerrar</button>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Universidad Tecnológica de Coahuila</p>
+            <p>Administrador del Sistema</p>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

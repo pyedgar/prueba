@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login · Sistema UTC</title>
+    <link rel="stylesheet" href="css/estilo-global.css">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body class="login-page">
+    <div class="login-contenedor">
+        <div class="login-tarjeta">
+            <div class="login-header">
+                <div class="login-logo">📋</div>
+                <h1 class="login-titulo">Sistema de Registro Docente</h1>
+                <p class="login-subtitulo">Universidad Tecnológica de Coahuila</p>
+            </div>
+            
+            <div id="errorMessage" class="login-error">❌ Usuario o contraseña incorrectos</div>
+            
+            <div class="login-input-group">
+                <label>👤 Usuario</label>
+                <input type="text" id="username" placeholder="Ingrese su usuario">
+            </div>
+            
+            <div class="login-input-group">
+                <label>🔐 Contraseña</label>
+                <input type="password" id="password" placeholder="Ingrese su contraseña">
+            </div>
+            
+            <button onclick="iniciarSesion()" class="login-btn">🔑 Iniciar Sesión</button>
+            
+            <div class="login-credenciales">
+                <strong>👑 Super Admin del sistema:</strong><br>
+                Usuario: laura.sandino<br>
+                Contraseña: laura123
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script>
+        function iniciarSesion() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            
+            if (loginUsuario(username, password)) return;
+            
+            document.getElementById('errorMessage').style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById('errorMessage').style.display = 'none';
+            }, 3000);
+        }
+
+        document.getElementById('username').addEventListener('keypress', e => e.key === 'Enter' && iniciarSesion());
+        document.getElementById('password').addEventListener('keypress', e => e.key === 'Enter' && iniciarSesion());
+    </script>
+</body>
+</html>

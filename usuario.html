@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuario · UTC</title>
+    <link rel="stylesheet" href="css/estilo-global.css">
+    <link rel="stylesheet" href="css/usuario.css">
+</head>
+<body>
+    <div id="notificationContainer" class="contenedor-notificaciones"></div>
+
+    <div class="contenedor">
+        <div class="header-global">
+            <h1>📋 Registro Docente</h1>
+            <div class="perfil-usuario">
+                <div class="avatar">👤</div>
+                <div class="info-usuario">
+                    <div class="nombre-usuario" id="userName">Cargando...</div>
+                    <div class="rol-usuario" id="userRole">Usuario</div>
+                </div>
+                <button onclick="cerrarSesion([intervaloActualizacion])" class="btn-cerrar-sesion">🚪 Salir</button>
+            </div>
+        </div>
+
+        <div class="panel-bienvenida">
+            <h2 id="welcomeMessage">👋 Hola</h2>
+            <div class="grid-estadisticas">
+                <div class="tarjeta-estadistica"><span id="totalRegistros">0</span><label>📋 Registros</label></div>
+                <div class="tarjeta-estadistica"><span id="totalEnvios">0</span><label>📤 Envíos</label></div>
+                <div class="tarjeta-estadistica"><span id="enviosAprobados">0</span><label>✅ Aprobados</label></div>
+                <div class="tarjeta-estadistica"><span id="enviosPendientes">0</span><label>⏳ Pendientes</label></div>
+                <div class="tarjeta-estadistica"><span id="enviosRechazados">0</span><label>❌ Rechazados</label></div>
+            </div>
+        </div>
+
+        <div class="seccion-edificio">
+            <h3>🏢 Enviar Tabla</h3>
+            <div class="grid-formulario">
+                <div class="grupo-formulario">
+                    <label>🏛️ Administrador</label>
+                    <select id="selectorAdmin" class="input-edificio" onchange="validarEnvio()">
+                        <option value="">Cargando...</option>
+                    </select>
+                </div>
+                <div class="grupo-formulario">
+                    <label>🏢 Edificio</label>
+                    <input type="text" id="nombreEdificio" class="input-edificio" placeholder="Nombre del edificio" oninput="validarEnvio()">
+                </div>
+            </div>
+            <div class="presets-edificio">
+                <span class="preset-edificio" onclick="setEdificio('Edificio Académico A')">🏛️ Edificio A</span>
+                <span class="preset-edificio" onclick="setEdificio('Edificio Académico B')">🏛️ Edificio B</span>
+                <span class="preset-edificio" onclick="setEdificio('Rectoría')">🏢 Rectoría</span>
+            </div>
+            <button onclick="enviarTabla()" class="btn-enviar" id="btnEnviar" disabled>📤 Enviar</button>
+        </div>
+
+        <div class="seccion-formulario">
+            <h3>📝 Registrar Docente</h3>
+            <div class="grid-formulario">
+                <input type="text" id="noEmpleado" placeholder="No. Empleado">
+                <input type="text" id="nombreDocente" placeholder="Nombre completo">
+                <input type="text" id="programaEducativo" placeholder="Programa educativo">
+                <input type="text" id="antiguedad" placeholder="Antigüedad">
+                <select id="sindicato">
+                    <option value="">Sindicato</option>
+                    <option value="SUTUTC">SU TUTC</option>
+                    <option value="FESES">FESES</option>
+                    <option value="No sindicalizado">No sindicalizado</option>
+                </select>
+            </div>
+            <div class="seccion-foto">
+                <div class="foto-placeholder" onclick="document.getElementById('fotoDocente').click()">
+                    📸 Subir Foto <span style="font-size: 11px;">Click</span>
+                </div>
+                <img id="photoPreview" class="foto-preview">
+                <input type="file" id="fotoDocente" accept="image/*" style="display: none;" onchange="previewFoto(event)">
+            </div>
+        </div>
+
+        <div class="seccion-asignaturas">
+            <h3>📚 Asignaturas</h3>
+            <div id="asignaturasContainer"></div>
+            <button onclick="agregarAsignatura()" class="btn" style="margin-top: 16px;">➕ Agregar</button>
+            <div class="total-horas">Total Horas: <span id="totalHoras">0</span></div>
+        </div>
+
+        <div style="display: flex; gap: 16px; margin: 24px 0;">
+            <button onclick="agregarDocente()" class="btn-primario" style="flex:1; padding:14px;">💾 Agregar</button>
+            <button onclick="limpiarFormulario()" class="btn" style="flex:1; padding:14px;">🧹 Limpiar</button>
+        </div>
+
+        <div class="contenedor-tabla">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px;">
+                <h3>📋 Mis Registros (<span id="totalDocentes">0</span>)</h3>
+                <button onclick="exportarExcel()" class="btn-primario btn-sm">📊 Exportar</button>
+            </div>
+            <table id="tablaDocentes">
+                <thead><tr><th>No. Empleado</th><th>Nombre</th><th>Programa</th><th>Asignaturas</th><th>Horas</th><th>Acciones</th></tr></thead>
+                <tbody id="tbodyDocentes"></tbody>
+            </table>
+        </div>
+
+        <div class="contenedor-tabla">
+            <h3 style="padding: 20px;">📤 Historial de Envíos</h3>
+            <table id="tablaEnviosUsuario">
+                <thead><tr><th>Fecha</th><th>Administrador</th><th>Edificio</th><th>Registros</th><th>Estado</th><th>Acciones</th></tr></thead>
+                <tbody id="tbodyEnviosUsuario"></tbody>
+            </table>
+        </div>
+
+        <div id="modalDetalles" class="modal">
+            <div class="modal-contenido">
+                <h3 id="modalTitulo">📋 Detalles</h3>
+                <div id="modalContenido" style="max-height:400px; overflow-y:auto; margin:20px 0; padding:10px; background:var(--gris-50); border-radius:var(--radio-lg);"></div>
+                <button onclick="cerrarModalDetalles()" class="btn">Cerrar</button>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Universidad Tecnológica de Coahuila</p>
+            <p>Usuario del Sistema</p>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/usuario.js"></script>
+</body>
+</html>

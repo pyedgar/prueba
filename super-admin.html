@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin · UTC</title>
+    <link rel="stylesheet" href="css/estilo-global.css">
+    <link rel="stylesheet" href="css/super-admin.css">
+</head>
+<body>
+    <div id="notificationContainer" class="contenedor-notificaciones"></div>
+
+    <div class="contenedor">
+        <!-- HEADER SUPER ADMIN -->
+        <div class="header-super">
+            <h1>👑 Panel Super Admin</h1>
+            <div class="perfil-super">
+                <div class="avatar-super">👑</div>
+                <div class="info-usuario">
+                    <div class="nombre-usuario" id="superAdminNombre">Cargando...</div>
+                    <div class="rol-usuario">Super Administrador</div>
+                </div>
+                <button onclick="cerrarSesion([intervaloActualizacion])" class="btn-cerrar-sesion">🚪 Salir</button>
+            </div>
+        </div>
+
+        <!-- ESTADÍSTICAS RÁPIDAS -->
+        <div class="panel-control">
+            <h2>⚙️ Panel de Control</h2>
+            <div class="grid-estadisticas">
+                <div class="tarjeta-estadistica-super">
+                    <span id="totalAdmins">0</span>
+                    <label>👥 Administradores</label>
+                </div>
+                <div class="tarjeta-estadistica-super">
+                    <span id="totalUsuarios">0</span>
+                    <label>👤 Usuarios</label>
+                </div>
+                <div class="tarjeta-estadistica-super">
+                    <span id="totalEnviosUsuarios">0</span>
+                    <label>📤 Envíos a Admins</label>
+                </div>
+                <div class="tarjeta-estadistica-super">
+                    <span id="totalEnviosAdmins">0</span>
+                    <label>📤 Envíos a Super</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- TABS DE NAVEGACIÓN -->
+        <div class="tabs-contenedor">
+            <button onclick="cambiarSeccion('admins')" id="tabAdmins" class="tab activo">👥 Administradores</button>
+            <button onclick="cambiarSeccion('usuarios')" id="tabUsuarios" class="tab">👤 Usuarios</button>
+            <button onclick="cambiarSeccion('enviosUsuarios')" id="tabEnviosUsuarios" class="tab">📤 Envíos a Admins</button>
+            <button onclick="cambiarSeccion('enviosAdmins')" id="tabEnviosAdmins" class="tab">📤 Envíos a Super</button>
+        </div>
+
+        <!-- SECCIÓN ADMINISTRADORES -->
+        <div id="seccionAdmins" class="seccion-gestion">
+            <div class="seccion-header">
+                <h3>👥 Administradores del Sistema</h3>
+                <button onclick="toggleFormulario('admin')" class="btn-primario-super" id="btnNuevoAdmin">
+                    <span class="btn-icono">➕</span> Nuevo Administrador
+                </button>
+            </div>
+
+            <!-- FORMULARIO DE NUEVO ADMIN (MEJORADO) -->
+            <div id="formNuevoAdmin" class="formulario-super" style="display: none;">
+                <div class="formulario-header">
+                    <span class="formulario-titulo">📝 Registrar Nuevo Administrador</span>
+                    <button onclick="toggleFormulario('admin')" class="btn-cerrar-formulario">✕</button>
+                </div>
+                
+                <div class="formulario-grid">
+                    <div class="campo-formulario">
+                        <label class="campo-etiqueta">
+                            <span class="campo-icono">👤</span>
+                            <span>Nombre Completo</span>
+                        </label>
+                        <div class="campo-input">
+                            <input type="text" id="nuevoAdminNombre" placeholder="Ej: Ing. Juan Pérez Martínez" autocomplete="off">
+                            <span class="campo-ayuda">Nombre completo del administrador</span>
+                        </div>
+                    </div>
+
+                    <div class="campo-formulario">
+                        <label class="campo-etiqueta">
+                            <span class="campo-icono">🔑</span>
+                            <span>Usuario</span>
+                        </label>
+                        <div class="campo-input">
+                            <input type="text" id="nuevoAdminUsuario" placeholder="Ej: juan.perez" autocomplete="off">
+                            <span class="campo-ayuda">Nombre de usuario para iniciar sesión</span>
+                        </div>
+                    </div>
+
+                    <div class="campo-formulario">
+                        <label class="campo-etiqueta">
+                            <span class="campo-icono">🔐</span>
+                            <span>Contraseña</span>
+                        </label>
+                        <div class="campo-input">
+                            <input type="password" id="nuevoAdminPassword" placeholder="••••••••" autocomplete="new-password">
+                            <span class="campo-ayuda">Mínimo 6 caracteres</span>
+                        </div>
+                    </div>
+
+                    <div class="campo-formulario">
+                        <label class="campo-etiqueta">
+                            <span class="campo-icono">🏛️</span>
+                            <span>Cargo</span>
+                        </label>
+                        <div class="campo-input">
+                            <input type="text" id="nuevoAdminCargo" placeholder="Ej: Tutor, Coordinador, Director" autocomplete="off">
+                            <span class="campo-ayuda">Posición o rol dentro del sistema</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="formulario-acciones">
+                    <button onclick="registrarAdministrador()" class="btn-guardar">
+                        <span class="btn-icono">✅</span> Guardar Administrador
+                    </button>
+                    <button onclick="toggleFormulario('admin')" class="btn-cancelar">
+                        <span class="btn-icono">✕</span> Cancelar
+                    </button>
+                </div>
+            </div>
+
+            <div class="contenedor-tabla">
+                <table class="tabla-administradores">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nombre</th>
+                            <th>Usuario</th>
+                            <th>Cargo</th>
+                            <th>Estado</th>
+                            <th>Envíos</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyAdministradores"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SECCIÓN USUARIOS -->
+        <div id="seccionUsuarios" class="seccion-gestion" style="display: none;">
+            <div class="seccion-header">
+                <h3>👤 Usuarios del Sistema</h3>
+                <button onclick="toggleFormulario('usuario')" class="btn-primario-super" id="btnNuevoUsuario">
+                    <span class="btn-icono">➕</span> Nuevo Usuario
+                </button>
+            </div>
+
+            <!-- FORMULARIO DE NUEVO USUARIO (MEJORADO) -->
+            <div id="formNuevoUsuario" class="formulario-super" style="display: none;">
+                <div class="formulario-header">
+                    <span class="formulario-titulo">📝 Registrar Nuevo Usuario</span>
+                    <button onclick="toggleFormulario('usuario')" class="btn-cerrar-formulario">✕</button>
+                </div>
+                
+                <div class="formulario-grid">
+                    <div class="campo-formulario">
+                        <label class="campo-etiqueta">
+                            <span class="campo-icono">👤</span>
+                            <span>Nombre Completo</span>
+                        </label>
+                        <div class="campo-input">
+                            <input type="text" id="nuevoUsuarioNombre" placeholder="Ej: Kenia Andrade Rodríguez" autocomplete="off">
+                            <span class="campo-ayuda">Nombre completo del usuario</span>
+                        </div>
+                    </div>
+
+                    <div class="campo-formulario">
+                        <label class="campo-etiqueta">
+                            <span class="campo-icono">🔑</span>
+                            <span>Usuario</span>
+                        </label>
+                        <div class="campo-input">
+                            <input type="text" id="nuevoUsuarioUsuario" placeholder="Ej: kenia.andrade" autocomplete="off">
+                            <span class="campo-ayuda">Nombre de usuario para iniciar sesión</span>
+                        </div>
+                    </div>
+
+                    <div class="campo-formulario">
+                        <label class="campo-etiqueta">
+                            <span class="campo-icono">🔐</span>
+                            <span>Contraseña</span>
+                        </label>
+                        <div class="campo-input">
+                            <input type="password" id="nuevoUsuarioPassword" placeholder="••••••••" autocomplete="new-password">
+                            <span class="campo-ayuda">Mínimo 6 caracteres</span>
+                        </div>
+                    </div>
+
+                    <div class="campo-formulario">
+                        <label class="campo-etiqueta">
+                            <span class="campo-icono">📋</span>
+                            <span>Cargo</span>
+                        </label>
+                        <div class="campo-input">
+                            <input type="text" id="nuevoUsuarioCargo" placeholder="Ej: Administradora, Docente, Asistente" autocomplete="off">
+                            <span class="campo-ayuda">Posición o rol del usuario</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="formulario-acciones">
+                    <button onclick="registrarUsuario()" class="btn-guardar">
+                        <span class="btn-icono">✅</span> Guardar Usuario
+                    </button>
+                    <button onclick="toggleFormulario('usuario')" class="btn-cancelar">
+                        <span class="btn-icono">✕</span> Cancelar
+                    </button>
+                </div>
+            </div>
+
+            <div class="contenedor-tabla">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nombre</th>
+                            <th>Usuario</th>
+                            <th>Cargo</th>
+                            <th>Estado</th>
+                            <th>Envíos</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyUsuarios"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SECCIÓN ENVÍOS DE USUARIOS A ADMINISTRADORES -->
+        <div id="seccionEnviosUsuarios" class="seccion-gestion" style="display: none;">
+            <h3>📤 Envíos de Usuarios a Administradores</h3>
+            <div class="contenedor-tabla">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Usuario</th>
+                            <th>Admin</th>
+                            <th>Edificio</th>
+                            <th>Registros</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyEnviosUsuarios"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- SECCIÓN ENVÍOS DE ADMINISTRADORES A SUPER -->
+        <div id="seccionEnviosAdmins" class="seccion-gestion" style="display: none;">
+            <h3>📤 Envíos de Administradores a Super Admin</h3>
+            <div class="contenedor-tabla">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Admin</th>
+                            <th>Usuario</th>
+                            <th>Edificio</th>
+                            <th>Registros</th>
+                            <th>Nota</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyEnviosAdmins"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- MODAL VER DETALLES -->
+        <div id="modalDetalles" class="modal">
+            <div class="modal-contenido">
+                <div class="modal-header">
+                    <h3 id="modalTitulo">📋 Detalles del Envío</h3>
+                    <button onclick="cerrarModalDetalles()" class="modal-cerrar">✕</button>
+                </div>
+                <div id="modalContenido" class="modal-contenido-detalles"></div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <p>Universidad Tecnológica de Coahuila</p>
+            <p>Super Administrador · Control total del sistema</p>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/super-admin.js"></script>
+</body>
+</html>
